@@ -1,7 +1,7 @@
 {
   "name": "cinemaddict",
   "private": true,
-  "description": "Проект «Киноман»",
+  "description": "Проект «Cinemaddict»",
   "browserslist": [
     "last 2 versions",
     "not dead",
