@@ -1,38 +1,24 @@
-import {
-  createRatingTemplate
-} from './view/rating.js';
-import {
-  createNavigationTemplate
-} from './view/navigation.js';
-import {
-  createSortTemplate
-} from './view/sort.js';
-import {
-  createFilmsTemplate
-} from './view/films.js';
-import {
-  createFilmsListTemplate
-} from './view/films-list.js';
+import {createRatingTemplate} from './view/rating.js';
+import {createNavigationTemplate} from './view/navigation.js';
+import {createSortTemplate} from './view/sort.js';
+import {createFilmsTemplate} from './view/films.js';
+import {createFilmsListTemplate} from './view/films-list.js';
 
-import {
-  createFilmCardTemplate
-} from './view/film-card.js';
-import {
-  createShowMoreTemplate
-} from './view/show-more.js';
-import {
-  createFilmsListExtraTemplate
-} from './view/films-list-extra.js';
-import {
-  createStatisticsTemplate
-} from './view/statistics.js';
-
+import {createFilmCardTemplate} from './view/film-card.js';
+import {createShowMoreTemplate} from './view/show-more.js';
+import {createFilmsListExtraTemplate} from './view/films-list-extra.js';
+import {createStatisticsTemplate} from './view/statistics.js';
 import {createFilmDetailsTemplate} from './view/film-details.js';
+import {generateFilms} from './mock/films-mock.js';
 
+// console.log(generateFilms());
 
 const FILMS_COUNT = 5;
 const EXTRA_FILMS = 2;
 
+const films = new Array(FILMS_COUNT).fill().map(generateFilms);
+
+// console.log(films);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -60,7 +46,7 @@ const flimsListElement = siteMainElement.querySelector('.films-list');
 
 const flimsListContainerElement = siteMainElement.querySelector('.films-list__container');
 for (let i = 0; i < FILMS_COUNT; i++) {
-  render(flimsListContainerElement, createFilmCardTemplate(), 'beforeend');
+  render(flimsListContainerElement, createFilmCardTemplate(films[i]), 'beforeend');
 }
 
 render(flimsListElement, createShowMoreTemplate(), 'beforeend');
@@ -72,7 +58,7 @@ const filmsExtraListContainer = [...flimsElement.querySelectorAll('.films-list--
 filmsExtraListContainer.forEach((item) => {
   const container = item.querySelector('.films-list__container');
   for (let i = 0; i < EXTRA_FILMS; i++) {
-    render(container, createFilmCardTemplate(), 'beforeend');
+    render(container, createFilmCardTemplate(films[i]), 'beforeend');
   }
 });
 
