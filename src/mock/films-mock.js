@@ -1,6 +1,8 @@
 import {
-  getRandomInteger
+  getRandomInteger, shuffleArray
 } from '../utils/common.js';
+import dayjs from 'dayjs';
+
 
 //Название фильма
 const generateName = () => {
@@ -47,15 +49,80 @@ const generateDescription = () => {
 const generateRaiting = () => {
   const raiting = [];
 
-  // for (let i = 1; i <= 10; i = i + 0.5) {
-  //   raiting.push(i);
-  //   console.log(raiting);
-  // }
+  for (let i = 1; i <= 10; i = i + 0.1) {
+    raiting.push(i.toFixed(1));
+  }
+  const randomIndex = getRandomInteger(0, raiting.length - 1);
+
+  return raiting[randomIndex];
 };
+
+//Режиссер
+const generateDirectors = () => {
+  const directors = [
+    'Dodo Abashidze',
+    'Mairzee Almas',
+    'Rod Amateau',
+    'Asia Argento',
+    'Dev Anand'
+  ];
+
+  const randomIndex = getRandomInteger(0, directors.length - 1);
+
+  return directors[randomIndex];
+};
+
+//Сценаристы
+const generateWriters = () => {
+  const writers = [
+    'Jay Bauman',
+    'Michael Bay',
+    'Nora Ephron',
+    'Menahem Golan',
+    'Paul Lieberstein'
+  ];
+
+  const randomIndex = getRandomInteger(0, writers.length - 1);
+
+  return writers[randomIndex];
+};
+
+//Актеры
+const generateActors = () => {
+  const actorsArray = [
+    'Jay Bauman',
+    'Michael Bay',
+    'Nora Ephron',
+    'Menahem Golan',
+    'Paul Lieberstein'
+  ];
+
+  return shuffleArray(actorsArray);
+};
+
+
+//Дата производства
+const generateDate = () => {
+  const days = getRandomInteger(-7, 7);
+  const months = getRandomInteger(1, 12);
+  const years = getRandomInteger(0, 50);
+
+  return dayjs()
+    .add(days, 'day')
+    .add(months, 'month')
+    .subtract(years, 'year')
+    .toDate();
+};
+
 
 export const generateFilms = () => ({
   name: generateName(),
   poster: generateImage(),
   description: generateDescription(),
-  raiting: generateRaiting()
+  raiting: generateRaiting(),
+  director: generateDirectors(),
+  writers: generateWriters(),
+  actors: generateActors(),
+  date: generateDate(),
+  // duration:
 });
