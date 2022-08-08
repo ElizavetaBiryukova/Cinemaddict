@@ -1,13 +1,23 @@
 import dayjs from 'dayjs';
 
 export const createFilmCardTemplate = (films) => {
-  const {filmInfo,comments} = films;
-  const {title,rating,release,runtime,genre,poster,description} = filmInfo;
+  const {
+    filmInfo,
+    comments
+  } = films;
+  const {
+    title,
+    rating,
+    release,
+    runtime,
+    genre,
+    poster,
+    description
+  } = filmInfo;
   const year = dayjs(release.date).format('YYYY');
   const duration = runtime > 59 ? `${parseInt((runtime/60), 10)} h ${runtime % 60} m` : `${runtime} m`;
   const shortDescription = description.length > 140 ? `${description.replace((description.length === 139), '$&')}...` : `${description}`;
   const numberСomments = comments === false ? '0' : `${comments.length}`;
-console.log(comments);
   return ` <article class="film-card">
       <h3 class="film-card__title">${title}</h3>
       <p class="film-card__rating">${rating}</p>

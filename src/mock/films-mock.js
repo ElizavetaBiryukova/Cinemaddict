@@ -188,9 +188,16 @@ const generateWatchingDate = () => {
     .toDate();
 };
 
+//Комментарий
+const generateFilmComments = () => {
+  const shuffledComments = shuffleArray(commentsArray);
+  const randomIndex = getRandomInteger(1, 5);
+  return shuffledComments.slice(0, randomIndex);
+};
+
 export const generateFilms = () => {
   const hasComments = Boolean(getRandomInteger(0, 1));
-  const comments = hasComments === false ? false : commentsArray;
+  const comments = hasComments === false ? false : generateFilmComments();
   return {
     id: getRandomInteger(0, 100),
     comments,
