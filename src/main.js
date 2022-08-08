@@ -11,7 +11,7 @@ import {createStatisticsTemplate} from './view/statistics.js';
 import {createFilmDetailsTemplate} from './view/film-details.js';
 import {generateFilms} from './mock/films-mock.js';
 
-// console.log(generateFilms());
+console.log(generateFilms());
 
 const FILMS_COUNT = 5;
 const EXTRA_FILMS = 2;

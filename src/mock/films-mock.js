@@ -1,11 +1,15 @@
-import {
-  getRandomInteger, shuffleArray
-} from '../utils/common.js';
 import dayjs from 'dayjs';
+import {
+  getRandomInteger,
+  shuffleArray
+} from '../utils/common.js';
+import {
+  commentsArray
+} from './comments-mock.js';
 
 
 //Название фильма
-const generateName = () => {
+const generateTitle = () => {
   const names = [
     'A Little Pony Without The Carpet',
     'Sagebrush Trail',
@@ -82,14 +86,12 @@ const generateWriters = () => {
     'Paul Lieberstein'
   ];
 
-  const randomIndex = getRandomInteger(0, writers.length - 1);
-
-  return writers[randomIndex];
+  return shuffleArray(writers);
 };
 
 //Актеры
 const generateActors = () => {
-  const actorsArray = [
+  const actors = [
     'Jay Bauman',
     'Michael Bay',
     'Nora Ephron',
@@ -97,13 +99,13 @@ const generateActors = () => {
     'Paul Lieberstein'
   ];
 
-  return shuffleArray(actorsArray);
+  return shuffleArray(actors);
 };
 
 
 //Дата производства
 const generateDate = () => {
-  const days = getRandomInteger(-7, 7);
+  const days = getRandomInteger(-7, 30);
   const months = getRandomInteger(1, 12);
   const years = getRandomInteger(0, 50);
 
@@ -114,15 +116,106 @@ const generateDate = () => {
     .toDate();
 };
 
+//Продолжительность
+const generateRuntime = () => getRandomInteger(0, 250);
 
-export const generateFilms = () => ({
-  name: generateName(),
-  poster: generateImage(),
-  description: generateDescription(),
-  raiting: generateRaiting(),
-  director: generateDirectors(),
-  writers: generateWriters(),
-  actors: generateActors(),
-  date: generateDate(),
-  // duration:
-});
+//Страна
+const generateCountry = () => {
+  const countries = [
+    'Brazil',
+    'British Indian Ocean Territory (the)',
+    'Brunei Darussalam',
+    'Bulgaria',
+    'Burkina Faso',
+    'Burundi',
+    'Cabo Verde',
+    'Cambodia',
+    'Cameroon',
+    'Canada',
+    'Cayman Islands (the)',
+    'Central African Republic (the)',
+    'Chad',
+    'Chile',
+  ];
+
+  const randomIndex = getRandomInteger(0, countries.length - 1);
+
+  return countries[randomIndex];
+};
+
+//Жанры
+const generateGenre = () => {
+  const genres = [
+    'Drama',
+    'Mystery',
+    'Comedy',
+    'Western',
+    'Musical'
+  ];
+
+  return shuffleArray(genres);
+};
+
+
+//Возрастной рейтинг
+const generateAgeRaiting = () => {
+  const ages = [
+    0,
+    12,
+    16,
+    18
+  ];
+
+  const randomIndex = getRandomInteger(0, ages.length - 1);
+
+  return ages[randomIndex];
+};
+
+//Дата просмотра
+const generateWatchingDate = () => {
+  const minutes = getRandomInteger(1, 59);
+  const hours = getRandomInteger(1, 23);
+  const days = getRandomInteger(-7, 30);
+  const months = getRandomInteger(1, 12);
+  const years = getRandomInteger(0, 50);
+
+  return dayjs()
+    .add(minutes, 'minutes')
+    .add(hours, 'hours')
+    .add(days, 'day')
+    .add(months, 'month')
+    .subtract(years, 'year')
+    .toDate();
+};
+
+export const generateFilms = () => {
+  const hasComments = Boolean(getRandomInteger(0, 1));
+  const comments = hasComments === false ? false : commentsArray;
+  return {
+    id: getRandomInteger(0, 100),
+    comments,
+    filmInfo: {
+      title: generateTitle(),
+      alternativeTitle: generateTitle(),
+      raiting: generateRaiting(),
+      poster: generateImage(),
+      ageRating: generateAgeRaiting(),
+      director: generateDirectors(),
+      writers: generateWriters(),
+      actors: generateActors(),
+      release: {
+        date: generateDate(),
+        country: generateCountry(),
+      },
+      runtime: generateRuntime(),
+      genre: generateGenre(),
+      description: generateDescription()
+    },
+    userDetails: {
+      watchlist: !!getRandomInteger(0,1),
+      alreadyWatched: !!getRandomInteger(0,1),
+      watchingDate: generateWatchingDate(),
+      favorite: !!getRandomInteger(0,1)
+    }
+  };
+};
