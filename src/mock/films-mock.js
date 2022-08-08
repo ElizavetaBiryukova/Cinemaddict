@@ -50,7 +50,7 @@ const generateDescription = () => {
 };
 
 // Рейтинг
-const generateRaiting = () => {
+const generateRating = () => {
   const raiting = [];
 
   for (let i = 1; i <= 10; i = i + 0.1) {
@@ -117,7 +117,7 @@ const generateDate = () => {
 };
 
 //Продолжительность
-const generateRuntime = () => getRandomInteger(0, 250);
+const generateRuntime = () => getRandomInteger(20, 250);
 
 //Страна
 const generateCountry = () => {
@@ -158,7 +158,7 @@ const generateGenre = () => {
 
 
 //Возрастной рейтинг
-const generateAgeRaiting = () => {
+const generateAgeRating = () => {
   const ages = [
     0,
     12,
@@ -197,9 +197,9 @@ export const generateFilms = () => {
     filmInfo: {
       title: generateTitle(),
       alternativeTitle: generateTitle(),
-      raiting: generateRaiting(),
+      rating: generateRating(),
       poster: generateImage(),
-      ageRating: generateAgeRaiting(),
+      ageRating: generateAgeRating(),
       director: generateDirectors(),
       writers: generateWriters(),
       actors: generateActors(),
@@ -212,10 +212,10 @@ export const generateFilms = () => {
       description: generateDescription()
     },
     userDetails: {
-      watchlist: !!getRandomInteger(0,1),
-      alreadyWatched: !!getRandomInteger(0,1),
+      watchlist: !!getRandomInteger(0, 1),
+      alreadyWatched: !!getRandomInteger(0, 1),
       watchingDate: generateWatchingDate(),
-      favorite: !!getRandomInteger(0,1)
+      favorite: !!getRandomInteger(0, 1)
     }
   };
 };
