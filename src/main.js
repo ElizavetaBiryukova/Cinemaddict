@@ -11,14 +11,11 @@ import {createStatisticsTemplate} from './view/statistics.js';
 import {createFilmDetailsTemplate} from './view/film-details.js';
 import {generateFilms} from './mock/films-mock.js';
 
-// console.log(generateFilms());
 
 const FILMS_COUNT = 5;
 const EXTRA_FILMS = 2;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilms);
-
-// console.log(films);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -66,4 +63,4 @@ filmsExtraListContainer.forEach((item) => {
 render(siteFooterStatisticsElement, createStatisticsTemplate(), 'beforeend');
 
 //details
-// render(siteFooterElement, createFilmDetailsTemplate(), 'afterend');
+render(siteFooterElement, createFilmDetailsTemplate(films[0]), 'afterend');
