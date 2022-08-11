@@ -28,9 +28,11 @@ const generateImage = () => {
   const images = [
     './images/posters/the-man-with-the-golden-arm.jpg',
     './images/posters/the-great-flamarion.jpg',
-    './images/posters/the-man-with-the-golden-arm.jpg',
     './images/posters/the-dance-of-life.jpg',
-    './images/posters/sagebrush-trail.jpg'
+    './images/posters/sagebrush-trail.jpg',
+    './images/posters/made-for-each-other.png',
+    './images/posters/popeye-meets-sinbad.png',
+    './images/posters/santa-claus-conquers-the-martians.jpg'
   ];
 
   const randomIndex = getRandomInteger(0, images.length - 1);

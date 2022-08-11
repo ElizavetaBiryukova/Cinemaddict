@@ -3,19 +3,20 @@ import {createNavigationTemplate} from './view/navigation.js';
 import {createSortTemplate} from './view/sort.js';
 import {createFilmsTemplate} from './view/films.js';
 import {createFilmsListTemplate} from './view/films-list.js';
-
 import {createFilmCardTemplate} from './view/film-card.js';
 import {createShowMoreTemplate} from './view/show-more.js';
 import {createFilmsListExtraTemplate} from './view/films-list-extra.js';
 import {createStatisticsTemplate} from './view/statistics.js';
 import {createFilmDetailsTemplate} from './view/film-details.js';
 import {generateFilms} from './mock/films-mock.js';
-
+import { generateFilter } from './utils/filter.js';
 
 const FILMS_COUNT = 5;
 const EXTRA_FILMS = 2;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilms);
+const filters = generateFilter(films);
+console.log(films);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -30,7 +31,7 @@ const siteFooterStatisticsElement = document.querySelector('.footer__statistics'
 render(siteHeaderElement, createRatingTemplate(), 'beforeend');
 
 //menu
-render(siteMainElement, createNavigationTemplate(), 'beforeend');
+render(siteMainElement, createNavigationTemplate(filters), 'beforeend');
 render(siteMainElement, createSortTemplate(), 'beforeend');
 
 //films
