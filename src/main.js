@@ -16,7 +16,7 @@ const EXTRA_FILMS = 2;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilms);
 const filters = generateFilter(films);
-console.log(films);
+// console.log(films);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);

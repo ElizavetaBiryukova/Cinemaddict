@@ -1,6 +1,15 @@
 import {
-  commentDate, releaseDate
+  commentDate,
+  releaseDate
 } from '../utils/common';
+
+const createPopupGenres = (genres) => {
+  if (genres.length === 1) {
+    return 'Genre';
+  } else {
+    return 'Genres';
+  }
+};
 
 const createPopupComments = (
   comments
@@ -105,7 +114,7 @@ export const createFilmDetailsTemplate = (films) => {
               <td class="film-details__cell">${release.country}</td>
             </tr>
             <tr class="film-details__row">
-              <td class="film-details__term">Genres</td>
+              <td class="film-details__term">${createPopupGenres(genre)}</td>
               <td class="film-details__cell">
                 <span class="film-details__genre">${genre[0]}</span>
                 <span class="film-details__genre">${genre[1]}</span>
