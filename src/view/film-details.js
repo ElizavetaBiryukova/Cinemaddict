@@ -1,7 +1,6 @@
-import dayjs from 'dayjs';
-/*eslint-disable */
-var calendar = require('dayjs/plugin/calendar');
-dayjs.extend(calendar);
+import {
+  commentDate, releaseDate
+} from '../utils/common';
 
 const createPopupComments = (
   comments
@@ -11,13 +10,8 @@ const createPopupComments = (
     return '';
   }
 
-  const commentsList = comments.map((comment) => {
-    const date = dayjs(comment.date).calendar(null, {
-      sameDay: '[Today]', // Тот же день ( Today at 2:30 AM )
-      lastDay: '[Yesterday at ] h:mm', // Накануне ( Yesterday at 2:30 AM )
-      sameElse: 'YYYY/MM/DD' // Все остальное ( 7/10/2011 )
-    });
-    return `<ul class="film-details__comments-list">
+  const commentsList = comments.map((comment) => (
+    `<ul class="film-details__comments-list">
 <li class="film-details__comment">
   <span class="film-details__comment-emoji">
     <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-smile">
@@ -26,14 +20,14 @@ const createPopupComments = (
     <p class="film-details__comment-text">${comment.comment}</p>
     <p class="film-details__comment-info">
       <span class="film-details__comment-author">${comment.author}</span>
-      <span class="film-details__comment-day">${date}</span>
+      <span class="film-details__comment-day">${commentDate(comment.date)}</span>
       <button class="film-details__comment-delete">Delete</button>
     </p>
   </div>
 </li>
-</ul>`;
+</ul>`
 
-  }).join('');
+  )).join('');
 
   return commentsList;
 };
@@ -57,8 +51,7 @@ export const createFilmDetailsTemplate = (films) => {
     description
   } = filmInfo;
 
-  console.log(comments);
-  const releaseDate = dayjs(release.date).format('DD MMMM YYYY');
+
   const duration = runtime > 59 ? `${parseInt((runtime/60), 10)}h ${runtime % 60}m` : `${runtime}m`;
   const numberСomments = comments === false ? '0' : `${comments.length}`;
   return `<section class="film-details">
@@ -101,7 +94,7 @@ export const createFilmDetailsTemplate = (films) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${releaseDate}</td>
+              <td class="film-details__cell">${releaseDate(release.date)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>

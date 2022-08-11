@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { realeaseYear } from '../utils/common';
 
 export const createFilmCardTemplate = (films) => {
   const {
@@ -14,7 +14,7 @@ export const createFilmCardTemplate = (films) => {
     poster,
     description
   } = filmInfo;
-  const year = dayjs(release.date).format('YYYY');
+
   const duration = runtime > 59 ? `${parseInt((runtime/60), 10)} h ${runtime % 60} m` : `${runtime} m`;
   const shortDescription = description.length > 140 ? `${description.replace((description.length === 139), '$&')}...` : `${description}`;
   const numberСomments = comments === false ? '0' : `${comments.length}`;
@@ -22,7 +22,7 @@ export const createFilmCardTemplate = (films) => {
       <h3 class="film-card__title">${title}</h3>
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
-        <span class="film-card__year">${year}</span>
+        <span class="film-card__year">${realeaseYear(release.date)}</span>
         <span class="film-card__duration">${duration}</span>
         <span class="film-card__genre">${genre[0]}</span>
       </p>

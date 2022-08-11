@@ -1,3 +1,8 @@
+/*eslint-disable */
+var calendar = require('dayjs/plugin/calendar');
+dayjs.extend(calendar);
+import dayjs from 'dayjs';
+
 // Функция из интернета по генерации случайного числа из диапазона
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
 export const getRandomInteger = (a = 0, b = 1) => {
@@ -15,3 +20,15 @@ export const shuffleArray = (array) => {
   }
   return array;
 };
+
+//dayjs
+//Дата релиза фильма в карточке фильма
+export const realeaseYear = (date)  => dayjs(date).format('YYYY');
+// Дата комментария в попупе фильма
+export const commentDate = (date) => dayjs(date).calendar(null, {
+  sameDay: '[Today]',
+  lastDay: '[Yesterday at ] h:mm',
+  sameElse: 'YYYY/MM/DD'
+});
+// Полная дата релиза фильма
+export const releaseDate = (date) => dayjs(date).format('DD MMMM YYYY');
