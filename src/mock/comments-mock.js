@@ -37,16 +37,17 @@ const generateDate = () => {
   const hours = getRandomInteger(1, 23);
   const days = getRandomInteger(-7, 30);
   const months = getRandomInteger(1, 12);
-  const years = getRandomInteger(0, 50);
+  const years = getRandomInteger(2010, dayjs().format('YYYY'));
 
   return dayjs()
     .add(minutes, 'minutes')
     .add(hours, 'hours')
     .add(days, 'day')
     .add(months, 'month')
-    .subtract(years, 'year')
+    .year(years, 'year')
     .toDate();
 };
+
 
 //Эмиоции
 const generateEmotion = () => {
@@ -65,7 +66,7 @@ export const generateComments = () => ({
   id: getRandomInteger(0, 100),
   author: generateAuthor(),
   comment: generateComment(),
-  data: generateDate(),
+  date: generateDate(),
   emotion: generateEmotion()
 });
 
