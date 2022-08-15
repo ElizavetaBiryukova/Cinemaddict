@@ -1,21 +1,20 @@
-import { createElement } from '../utils/common.js';
+import { createElement } from './utils';
 
-const createStatisticsTemplate = () => (
-  `<p>130 291 movies inside</p>
-  `
+const createLoading = () => (
+  '<h2 class="films-list__title">Loading...</h2>'
 );
 
-export default class Statistics {
+export default class Loading {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createStatisticsTemplate();
+    return createLoading();
   }
 
   getElement() {
-    if(!this._element) {
+    if (!this._element) {
       this._element = createElement(this.getTemplate());
     }
 

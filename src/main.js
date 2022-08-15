@@ -1,28 +1,14 @@
 import RatingView from './view/rating.js';
-import {
-  createNavigationTemplate
-} from './view/navigation.js';
-import {
-  createSortTemplate
-} from './view/sort.js';
-import {
-  createFilmsTemplate
-} from './view/films.js';
-import {
-  createFilmsListTemplate
-} from './view/films-list.js';
+import NavigationView from './view/navigation.js';
+import SortView from './view/sort.js';
+import FilmsView from './view/films.js';
+import FilmsListView from './view/films-list.js';
 import {
   createFilmCardTemplate
 } from './view/film-card.js';
-import {
-  createShowMoreTemplate
-} from './view/show-more.js';
-import {
-  createFilmsListExtraTemplate
-} from './view/films-list-extra.js';
-import {
-  createStatisticsTemplate
-} from './view/statistics.js';
+import ShowMoreView from './view/show-more.js';
+import FilmsListExtraView from './view/films-list-extra.js';
+import StatisticsView from './view/statistics.js';
 import {
   createFilmDetailsTemplate
 } from './view/film-details.js';
@@ -32,6 +18,7 @@ import {
 import {
   generateFilter
 } from './utils/filter.js';
+// import LoadingView from './view/loading.js';
 import {
   renderElement,
   RenderPosition,
@@ -44,7 +31,7 @@ const EXTRA_FILMS = 2;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilms);
 const filters = generateFilter(films);
-// console.log(films);
+// console.log(NavigationView());
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
@@ -55,14 +42,14 @@ const siteFooterStatisticsElement = document.querySelector('.footer__statistics'
 renderElement(siteHeaderElement, new RatingView().getElement(), RenderPosition.BEFOREEND);
 
 //menu
-renderTemplate(siteMainElement, createNavigationTemplate(filters), 'beforeend');
-renderTemplate(siteMainElement, createSortTemplate(), 'beforeend');
+renderElement(siteMainElement, new NavigationView(filters).getElement(), RenderPosition.BEFOREEND);
+renderElement(siteMainElement, new SortView().getElement(), RenderPosition.BEFOREEND);
 
 //films
-renderTemplate(siteMainElement, createFilmsTemplate(), 'beforeend');
+renderElement(siteMainElement, new FilmsView().getElement(), RenderPosition.BEFOREEND);
 
 const flimsElement = siteMainElement.querySelector('.films');
-renderTemplate(flimsElement, createFilmsListTemplate(), 'beforeend');
+renderElement(flimsElement, new FilmsListView().getElement(), RenderPosition.BEFOREEND);
 
 const flimsListElement = siteMainElement.querySelector('.films-list');
 
@@ -74,7 +61,7 @@ for (let i = 0; i < Math.min(films.length, FILMS_COUNT_PER_STEP); i++) {
 
 if (films.length > FILMS_COUNT_PER_STEP) {
   let renderFilmsCount = FILMS_COUNT_PER_STEP;
-  renderTemplate(flimsListElement, createShowMoreTemplate(), 'beforeend');
+  renderElement(flimsListElement, new ShowMoreView().getElement(), RenderPosition.BEFOREEND);
 
   const showMoreButton = flimsListElement.querySelector('.films-list__show-more');
 
@@ -92,8 +79,8 @@ if (films.length > FILMS_COUNT_PER_STEP) {
   });
 }
 
-renderTemplate(flimsElement, createFilmsListExtraTemplate('Top rated'), 'beforeend');
-renderTemplate(flimsElement, createFilmsListExtraTemplate('Most commented'), 'beforeend');
+renderElement(flimsElement, new FilmsListExtraView('Top rated').getElement(), RenderPosition.BEFOREEND);
+renderElement(flimsElement, new FilmsListExtraView('Most commented').getElement(), RenderPosition.BEFOREEND);
 const filmsExtraListContainer = [...flimsElement.querySelectorAll('.films-list--extra')];
 
 filmsExtraListContainer.forEach((item) => {
@@ -104,7 +91,9 @@ filmsExtraListContainer.forEach((item) => {
 });
 
 //footer
-renderTemplate(siteFooterStatisticsElement, createStatisticsTemplate(), 'beforeend');
+renderElement(siteFooterStatisticsElement, new StatisticsView().getElement(), RenderPosition.BEFOREEND);
 
 //details
 renderTemplate(siteFooterElement, createFilmDetailsTemplate(films[0]), 'afterend');
+
+// LoadingView;

@@ -1,3 +1,5 @@
+import { createElement } from '../utils/common.js';
+
 const removesCount = (name, count) => {
   if (name === 'All moves') {
     return '';
@@ -16,7 +18,7 @@ const createNavigationItemTemplate = (filters, oncklick) => {
 };
 
 
-export const createNavigationTemplate = (filterItems) => {
+const createNavigationTemplate = (filterItems) => {
   const filterItemsTemplate = filterItems
     .map((filter, index) => createNavigationItemTemplate(filter, index === 0))
     .join('');
@@ -28,3 +30,26 @@ ${filterItemsTemplate}
   <a href="#stats" class="main-navigation__additional">Stats</a>
   </nav>`;
 };
+
+export default class Navigation {
+  constructor(filters) {
+    this._filters = filters;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createNavigationTemplate(this._filters);
+  }
+
+  getElement() {
+    if(!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
