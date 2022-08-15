@@ -3,6 +3,38 @@ var calendar = require('dayjs/plugin/calendar');
 dayjs.extend(calendar);
 import dayjs from 'dayjs';
 
+export const RenderPosition = {
+  AFTERBEGIN: 'afterbegin',
+  BEFOREEND: 'beforeend',
+};
+
+export const renderElement = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+      case RenderPosition.BEFOREEND:
+        container.append(element);
+        break;
+  }
+};
+
+export const renderTemplate = (container, template, place) => {
+  container.insertAdjacentHTML(place, template);
+};
+
+//Принцип работы:
+// 1 создаем пустой div блок
+// 2 берем html в виде строки и вкладываем в этот div-блок, превращая в DOM-элемент
+// 3 возвращаем этот DOM элемент
+// html в строке должен иметь общую обертку
+export const createElement = (template) => {
+  const newElement = document.createElement('div');
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
 // Функция из интернета по генерации случайного числа из диапазона
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
 export const getRandomInteger = (a = 0, b = 1) => {
