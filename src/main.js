@@ -1,6 +1,4 @@
-import {
-  createRatingTemplate
-} from './view/rating.js';
+import RatingView from './view/rating.js';
 import {
   createNavigationTemplate
 } from './view/navigation.js';
@@ -35,6 +33,8 @@ import {
   generateFilter
 } from './utils/filter.js';
 import {
+  renderElement,
+  RenderPosition,
   renderTemplate
 } from './utils/common.js';
 
@@ -52,7 +52,7 @@ const siteFooterElement = document.querySelector('.footer');
 const siteFooterStatisticsElement = document.querySelector('.footer__statistics');
 
 //header
-renderTemplate(siteHeaderElement, createRatingTemplate(), 'beforeend');
+renderElement(siteHeaderElement, new RatingView().getElement(), RenderPosition.BEFOREEND);
 
 //menu
 renderTemplate(siteMainElement, createNavigationTemplate(filters), 'beforeend');
