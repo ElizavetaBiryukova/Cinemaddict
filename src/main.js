@@ -16,7 +16,7 @@ import {
 } from './utils/filter.js';
 // import LoadingView from './view/loading.js';
 import {
-  renderElement,
+  render,
   RenderPosition,
 } from './utils/common.js';
 
@@ -33,36 +33,43 @@ const siteFooterElement = document.querySelector('.footer');
 const siteFooterStatisticsElement = document.querySelector('.footer__statistics');
 
 //header
-renderElement(siteHeaderElement, new RatingView().getElement(), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new RatingView().getElement(), RenderPosition.BEFOREEND);
 
 //menu
-renderElement(siteMainElement, new NavigationView(filters).getElement(), RenderPosition.BEFOREEND);
-renderElement(siteMainElement, new SortView().getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new NavigationView(filters).getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new SortView().getElement(), RenderPosition.BEFOREEND);
 
 //films
+const renderFilm = (filmListElement, film) => {
+  const filmCardComponent = new FilmCardView(film);
+  // const FilmDetailsComponent = new  FilmDetailsView(film);
+
+  render(filmListElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
 const flimsComponent = new FilmsView();
 const flimsListComponent = new FilmsListView();
 
-renderElement(siteMainElement, flimsComponent.getElement(), RenderPosition.BEFOREEND);
-renderElement(flimsComponent.getElement(), flimsListComponent.getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, flimsComponent.getElement(), RenderPosition.BEFOREEND);
+render(flimsComponent.getElement(), flimsListComponent.getElement(), RenderPosition.BEFOREEND);
 // console.log(flimsComponent.getElement());
 
 const flimsListContainerComponent = flimsListComponent.getElement().querySelector('.films-list__container');
 
 for (let i = 0; i < Math.min(films.length, FILMS_COUNT_PER_STEP); i++) {
-  renderElement(flimsListContainerComponent, new FilmCardView(films[i]).getElement(), RenderPosition.BEFOREEND);
+  renderFilm(flimsListContainerComponent, films[i]);
 }
 
 if (films.length > FILMS_COUNT_PER_STEP) {
   const showMoreButton = new ShowMoreView();
   let renderFilmsCount = FILMS_COUNT_PER_STEP;
-  renderElement(flimsListComponent.getElement(), showMoreButton.getElement(), RenderPosition.BEFOREEND);
+  render(flimsListComponent.getElement(), showMoreButton.getElement(), RenderPosition.BEFOREEND);
 
   showMoreButton.getElement().addEventListener('click', (evt) => {
     evt.preventDefault();
     films
       .slice(renderFilmsCount, renderFilmsCount + FILMS_COUNT_PER_STEP)
-      .forEach((film) => renderElement(flimsListContainerComponent, new FilmCardView(film).getElement(), RenderPosition.BEFOREEND));
+      .forEach((film) => renderFilm(flimsListContainerComponent, film));
 
     renderFilmsCount += FILMS_COUNT_PER_STEP;
 
@@ -72,21 +79,21 @@ if (films.length > FILMS_COUNT_PER_STEP) {
   });
 }
 
-renderElement(flimsComponent.getElement(), new FilmsListExtraView('Top rated').getElement(), RenderPosition.BEFOREEND);
-renderElement(flimsComponent.getElement(), new FilmsListExtraView('Most commented').getElement(), RenderPosition.BEFOREEND);
+render(flimsComponent.getElement(), new FilmsListExtraView('Top rated').getElement(), RenderPosition.BEFOREEND);
+render(flimsComponent.getElement(), new FilmsListExtraView('Most commented').getElement(), RenderPosition.BEFOREEND);
 const filmsExtraListContainer = [...flimsComponent.getElement().querySelectorAll('.films-list--extra')];
 
 filmsExtraListContainer.forEach((item) => {
   const container = item.querySelector('.films-list__container');
   for (let i = 0; i < EXTRA_FILMS; i++) {
-    renderElement(container, new FilmCardView(films[i]).getElement(), RenderPosition.BEFOREEND);
+    render(container, new FilmCardView(films[i]).getElement(), RenderPosition.BEFOREEND);
   }
 });
 
 //footer
-renderElement(siteFooterStatisticsElement, new StatisticsView().getElement(), RenderPosition.BEFOREEND);
+render(siteFooterStatisticsElement, new StatisticsView().getElement(), RenderPosition.BEFOREEND);
 
 //details
-renderElement(siteFooterElement, new FilmDetailsView(films[0]).getElement(), RenderPosition.AFTERBEGIN);
+render(siteFooterElement, new FilmDetailsView(films[0]).getElement(), RenderPosition.AFTERBEGIN);
 
 // new LoadingView();
