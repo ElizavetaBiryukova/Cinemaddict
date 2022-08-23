@@ -2,8 +2,7 @@ import { createElement } from '../utils/common.js';
 
 const createStatisticsTemplate = () => (
   `<p>130 291 movies inside</p>
-  `
-);
+`);
 
 export default class Statistics {
   constructor() {

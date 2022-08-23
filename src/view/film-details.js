@@ -1,6 +1,7 @@
 import {
   commentDate,
-  releaseDate
+  releaseDate,
+  createElement
 } from '../utils/common';
 
 const createPopupGenres = (genres) => {
@@ -41,7 +42,7 @@ const createPopupComments = (
   return commentsList;
 };
 
-export const createFilmDetailsTemplate = (films) => {
+const createFilmDetailsTemplate = (films) => {
   const {
     filmInfo,
     comments
@@ -172,3 +173,28 @@ export const createFilmDetailsTemplate = (films) => {
         </div>
       </section>`;
 };
+
+
+export default class FilmDetails {
+  constructor(films) {
+    this._films = films;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmDetailsTemplate(this._films);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

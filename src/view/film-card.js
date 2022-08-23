@@ -1,6 +1,9 @@
-import { realeaseYear } from '../utils/common';
+import {
+  realeaseYear,
+  createElement
+} from '../utils/common';
 
-export const createFilmCardTemplate = (films) => {
+const createFilmCardTemplate = (films) => {
   const {
     filmInfo,
     comments
@@ -18,7 +21,7 @@ export const createFilmCardTemplate = (films) => {
   const duration = runtime > 59 ? `${parseInt((runtime/60), 10)} h ${runtime % 60} m` : `${runtime} m`;
   const shortDescription = description.length > 140 ? `${description.replace((description.length === 139), '$&')}...` : `${description}`;
   const numberСomments = comments === false ? '0' : `${comments.length}`;
-  return ` <article class="film-card">
+  return `<article class="film-card">
       <h3 class="film-card__title">${title}</h3>
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
@@ -36,3 +39,27 @@ export const createFilmCardTemplate = (films) => {
       </div>
     </article>`;
 };
+
+export default class FilmCard {
+  constructor(films) {
+    this._films = films;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmCardTemplate(this._films);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

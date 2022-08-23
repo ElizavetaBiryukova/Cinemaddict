@@ -19,10 +19,6 @@ export const renderElement = (container, element, place) => {
   }
 };
 
-export const renderTemplate = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 //Принцип работы:
 // 1 создаем пустой div блок
 // 2 берем html в виде строки и вкладываем в этот div-блок, превращая в DOM-элемент
@@ -33,6 +29,13 @@ export const createElement = (template) => {
   newElement.innerHTML = template;
 
   return newElement.firstChild;
+};
+
+export const createElements = (template) => {
+  const newElement = document.createElement('div');
+  newElement.innerHTML = template;
+
+  return newElement;
 };
 
 // Функция из интернета по генерации случайного числа из диапазона
