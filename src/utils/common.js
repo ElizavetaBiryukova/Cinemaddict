@@ -56,6 +56,8 @@ export const shuffleArray = (array) => {
   return array;
 };
 
+export const Keys = { ESCAPE: 'Escape', ESC: 'Esc' };
+
 //dayjs
 //Дата релиза фильма в карточке фильма
 export const realeaseYear = (date)  => dayjs(date).format('YYYY');
