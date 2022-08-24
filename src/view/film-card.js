@@ -1,6 +1,6 @@
 import {
   realeaseYear
-} from '../utils/common';
+} from '../utils/film.js';
 import AbstractView from './abstract.js';
 
 const createFilmCardTemplate = (films) => {
@@ -60,6 +60,10 @@ export default class FilmCard extends AbstractView {
   setOpenClickHandler(callback) {
     this._callback.openClick = callback;
     this.getElement().addEventListener('click', this._openClickHandler);
+    // this.getElement().querySelector('.film-card__poster').addEventListener('click', this._openClickHandler);
+    // this.getElement().querySelector('.film-card__title').addEventListener('click', this._openClickHandler);
+    // this.getElement().querySelector('.film-card__comments').addEventListener('click', this._openClickHandler);
+
   }
 
 }

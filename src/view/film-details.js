@@ -1,7 +1,7 @@
 import {
   commentDate,
   releaseDate
-} from '../utils/common';
+} from '../utils/film.js';
 import AbstractView from './abstract.js';
 
 const createPopupGenres = (genres) => {
