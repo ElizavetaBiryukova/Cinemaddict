@@ -50,15 +50,16 @@ const renderFilm = (filmListElement, film) => {
   const removeDetailsComponent = () => {
     filmDetailsComponent.getElement().remove();
     filmDetailsComponent.removeElement();
+
     document.querySelector('body').classList.remove('hide-overflow');
   };
 
-  filmCardComponent.getElement().addEventListener('click', () => {
+  filmCardComponent.setOpenClickHandler(() => {
     siteFooterElement.appendChild(filmDetailsComponent.getElement());
     document.querySelector('body').classList.add('hide-overflow');
   });
 
-  filmDetailsComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => {
+  filmDetailsComponent.setCloseClickHandler(() => {
     removeDetailsComponent();
   });
 
@@ -70,8 +71,6 @@ const renderFilm = (filmListElement, film) => {
     }
   };
   document.addEventListener('keydown', onEscKeyDown);
-
-
   render(filmListElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
@@ -102,8 +101,7 @@ const renderFilmsBoard = (filmsContainer, boardFilms) => {
     let renderFilmsCount = FILMS_COUNT_PER_STEP;
     render(flimsListComponent.getElement(), showMoreButton.getElement(), RenderPosition.BEFOREEND);
 
-    showMoreButton.getElement().addEventListener('click', (evt) => {
-      evt.preventDefault();
+    showMoreButton.setClickHandler(() => {
       boardFilms
         .slice(renderFilmsCount, renderFilmsCount + FILMS_COUNT_PER_STEP)
         .forEach((film) => renderFilm(flimsListContainerComponent, film));

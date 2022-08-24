@@ -40,14 +40,26 @@ const createFilmCardTemplate = (films) => {
     </article>`;
 };
 
-
 export default class FilmCard extends AbstractView {
   constructor(films) {
     super();
     this._films = films;
+
+    this._openClickHandler = this._openClickHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmCardTemplate(this._films);
   }
+
+  _openClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.openClick();
+  }
+
+  setOpenClickHandler(callback) {
+    this._callback.openClick = callback;
+    this.getElement().addEventListener('click', this._openClickHandler);
+  }
+
 }
