@@ -42,9 +42,6 @@ render(siteMainElement, new NavigationView(filters).getElement(), RenderPosition
 render(siteMainElement, new SortView().getElement(), RenderPosition.BEFOREEND);
 
 //films
-const flimsComponent = new FilmsView();
-const flimsListComponent = new FilmsListView();
-
 
 const renderFilm = (filmListElement, film) => {
   const filmCardComponent = new FilmCardView(film);
@@ -78,59 +75,58 @@ const renderFilm = (filmListElement, film) => {
   render(filmListElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-render(siteMainElement, flimsComponent.getElement(), RenderPosition.BEFOREEND);
+const renderFilmsBoard = (filmsContainer, boardFilms) => {
+  const flimsComponent = new FilmsView();
+  const flimsListComponent = new FilmsListView();
 
-//no films
-if (films.length === 0) {
-  render(flimsComponent.getElement(), new NoFilmsView().getElement(), RenderPosition.BEFOREEND);
-  // render(flimsComponent.getElement(), new FilmsListExtraView('Top rated').removeElement(), RenderPosition.BEFOREEND);
-  // render(flimsComponent.getElement(), new FilmsListExtraView('Most commented').removeElement(), RenderPosition.BEFOREEND);
-} else {
-  render(flimsComponent.getElement(), flimsListComponent.getElement(), RenderPosition.BEFOREEND);
-  render(flimsComponent.getElement(), new FilmsListExtraView('Top rated').getElement(), RenderPosition.BEFOREEND);
-  render(flimsComponent.getElement(), new FilmsListExtraView('Most commented').getElement(), RenderPosition.BEFOREEND);
-}
+  render(filmsContainer, flimsComponent.getElement(), RenderPosition.BEFOREEND);
 
-// console.log(NoFilmsView.getElement());
-// render(flimsComponent.getElement(), flimsListComponent.getElement(), RenderPosition.BEFOREEND);
+  //no films
+  if (boardFilms.length === 0) {
+    render(flimsComponent.getElement(), new NoFilmsView().getElement(), RenderPosition.BEFOREEND);
 
-const flimsListContainerComponent = flimsListComponent.getElement().querySelector('.films-list__container');
+  } else {
+    render(flimsComponent.getElement(), flimsListComponent.getElement(), RenderPosition.BEFOREEND);
+    render(flimsComponent.getElement(), new FilmsListExtraView('Top rated').getElement(), RenderPosition.BEFOREEND);
+    render(flimsComponent.getElement(), new FilmsListExtraView('Most commented').getElement(), RenderPosition.BEFOREEND);
+  }
 
-for (let i = 0; i < Math.min(films.length, FILMS_COUNT_PER_STEP); i++) {
-  renderFilm(flimsListContainerComponent, films[i]);
-}
+  const flimsListContainerComponent = flimsListComponent.getElement().querySelector('.films-list__container');
 
-if (films.length > FILMS_COUNT_PER_STEP) {
-  const showMoreButton = new ShowMoreView();
-  let renderFilmsCount = FILMS_COUNT_PER_STEP;
-  render(flimsListComponent.getElement(), showMoreButton.getElement(), RenderPosition.BEFOREEND);
+  for (let i = 0; i < Math.min(boardFilms.length, FILMS_COUNT_PER_STEP); i++) {
+    renderFilm(flimsListContainerComponent, boardFilms[i]);
+  }
 
-  showMoreButton.getElement().addEventListener('click', (evt) => {
-    evt.preventDefault();
-    films
-      .slice(renderFilmsCount, renderFilmsCount + FILMS_COUNT_PER_STEP)
-      .forEach((film) => renderFilm(flimsListContainerComponent, film));
+  if (boardFilms.length > FILMS_COUNT_PER_STEP) {
+    const showMoreButton = new ShowMoreView();
+    let renderFilmsCount = FILMS_COUNT_PER_STEP;
+    render(flimsListComponent.getElement(), showMoreButton.getElement(), RenderPosition.BEFOREEND);
 
-    renderFilmsCount += FILMS_COUNT_PER_STEP;
+    showMoreButton.getElement().addEventListener('click', (evt) => {
+      evt.preventDefault();
+      boardFilms
+        .slice(renderFilmsCount, renderFilmsCount + FILMS_COUNT_PER_STEP)
+        .forEach((film) => renderFilm(flimsListContainerComponent, film));
 
-    if (renderFilmsCount >= films.length) {
-      showMoreButton.getElement().remove();
+      renderFilmsCount += FILMS_COUNT_PER_STEP;
+
+      if (renderFilmsCount >= boardFilms.length) {
+        showMoreButton.getElement().remove();
+      }
+    });
+  }
+
+  const filmsExtraListContainer = [...flimsComponent.getElement().querySelectorAll('.films-list--extra')];
+
+  filmsExtraListContainer.forEach((item) => {
+    const container = item.querySelector('.films-list__container');
+    for (let i = 0; i < EXTRA_FILMS; i++) {
+      render(container, new FilmCardView(boardFilms[i]).getElement(), RenderPosition.BEFOREEND);
     }
   });
-}
+};
 
-// render(flimsComponent.getElement(), new FilmsListExtraView('Top rated').getElement(), RenderPosition.BEFOREEND);
-// render(flimsComponent.getElement(), new FilmsListExtraView('Most commented').getElement(), RenderPosition.BEFOREEND);
-const filmsExtraListContainer = [...flimsComponent.getElement().querySelectorAll('.films-list--extra')];
-
-filmsExtraListContainer.forEach((item) => {
-  const container = item.querySelector('.films-list__container');
-  for (let i = 0; i < EXTRA_FILMS; i++) {
-    render(container, new FilmCardView(films[i]).getElement(), RenderPosition.BEFOREEND);
-  }
-});
+renderFilmsBoard(siteMainElement, films);
 
 //footer
 render(siteFooterStatisticsElement, new StatisticsView().getElement(), RenderPosition.BEFOREEND);
-
-
