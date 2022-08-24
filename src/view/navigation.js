@@ -1,4 +1,4 @@
-import { createElements } from '../utils/common.js';
+import AbstractView from './abstract.js';
 
 const removesCount = (name, count) => {
   if (name === 'All moves') {
@@ -18,38 +18,27 @@ const createNavigationItemTemplate = (filters, oncklick) => {
 };
 
 
-const createNavigationTemplate = (filterItems) => {
+export const createNavigationTemplate = (filterItems) => {
   const filterItemsTemplate = filterItems
     .map((filter, index) => createNavigationItemTemplate(filter, index === 0))
     .join('');
-  return `
+  return `<div>
   <nav class="main-navigation">
   <div class="main-navigation__items">
   ${filterItemsTemplate}
   </div>
   <a href="#stats" class="main-navigation__additional">Stats</a>
-  </nav>`;
+  </nav>
+  </div>`;
 };
 
-export default class Navigation {
+export default class Navigation extends AbstractView {
   constructor(filters) {
+    super();
     this._filters = filters;
-    this._element = null;
   }
 
   getTemplate() {
     return createNavigationTemplate(this._filters);
-  }
-
-  getElement() {
-    if(!this._element) {
-      this._element = createElements(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

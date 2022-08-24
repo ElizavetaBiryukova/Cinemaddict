@@ -1,8 +1,8 @@
 import {
   commentDate,
-  releaseDate,
-  createElement
+  releaseDate
 } from '../utils/common';
+import AbstractView from './abstract.js';
 
 const createPopupGenres = (genres) => {
   if (genres.length === 1) {
@@ -175,26 +175,13 @@ const createFilmDetailsTemplate = (films) => {
 };
 
 
-export default class FilmDetails {
+export default class FilmDetails extends AbstractView {
   constructor(films) {
+    super();
     this._films = films;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmDetailsTemplate(this._films);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
