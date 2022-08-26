@@ -50,7 +50,8 @@ render(siteFooterStatisticsElement, new StatisticsView(), RenderPosition.BEFOREE
 
 
 //films
-
+const filmsPresenter = new BoardFilms(siteMainElement);
+filmsPresenter.init(films);
 // const renderFilm = (filmListElement, film) => {
 //   const filmCardComponent = new FilmCardView(film);
 //   const filmDetailsComponent = new FilmDetailsView(film);
@@ -133,6 +134,3 @@ render(siteFooterStatisticsElement, new StatisticsView(), RenderPosition.BEFOREE
 
 // renderFilmsList(siteMainElement, films);
 
-
-const filmsPresenter = new BoardFilms(siteMainElement);
-filmsPresenter.init(films);
