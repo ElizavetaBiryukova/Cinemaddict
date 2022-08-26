@@ -1,7 +1,7 @@
 import FilmsView from '../view/films.js';
 import FilmsListView from '../view/films-list.js';
 import ShowMoreView from '../view/show-more.js';
-// import FilmsListExtraView from '../view/films-list-extra.js';
+import FilmsListExtraView from '../view/films-list-extra.js';
 import NoFilmsView from '../view/no-films.js';
 import FilmCardView from '../view/film-card.js';
 import FilmDetailsView from '../view/film-details.js';
@@ -49,26 +49,31 @@ export default class BoardFilms {
   }
 
   // _renderFilmsListExtraContainer() {
-  //   const filmsExtraListContainer = [...this._flimsComponent.getElement().querySelectorAll('.films-list--extra')];
-
-  //   filmsExtraListContainer.forEach((item) => {
-  //     const container = item.querySelector('.films-list__container');
-  //     for (let i = 0; i < EXTRA_FILMS; i++) {
-  //       this._renderFilm(container, this._films[i]);
-  //     }
-  //   });
-
-  // }
-
-  // _renderFilmsListTopRated() {
-  //   //Список екстра фильмов топ рейтинга
   //   render(this._flimsComponent, new FilmsListExtraView('Top rated'), RenderPosition.BEFOREEND);
-  // }
-
-  // _renderFilmsListMostCommented() {
-  //   //Спиок экстра фильмов популярные
   //   render(this._flimsComponent, new FilmsListExtraView('Most commented'), RenderPosition.BEFOREEND);
   // }
+
+  // _renderFilmsListExtra() {
+  //   const filmsExtraList = [...this._flimsComponent.getElement().querySelectorAll('.films-list--extra')];
+
+  //   filmsExtraList.forEach((item) => {
+  //     const container = item.querySelector('.films-list__container');
+  //     for (let i = 0; i < EXTRA_FILMS; i++) {
+  //       this._renderFilms(container, films[i]);
+  //     }
+  //   });
+  // }
+
+
+  _renderFilmsListTopRated() {
+    //Список екстра фильмов топ рейтинга
+    render(this._flimsComponent, new FilmsListExtraView('Top rated'), RenderPosition.BEFOREEND);
+  }
+
+  _renderFilmsListMostCommented() {
+    //Спиок экстра фильмов популярные
+    render(this._flimsComponent, new FilmsListExtraView('Most commented'), RenderPosition.BEFOREEND);
+  }
 
   _renderFilm(film) {
     //Рендер карточек с фильмами, пока что это функция renderFilm В main.js
@@ -99,8 +104,11 @@ export default class BoardFilms {
         document.removeEventListener('keydown', onEscKeyDown);
       }
     };
-    const flimsListContainerComponent = this._flimsListComponent.getElement().querySelector('.films-list__container');
+
     document.addEventListener('keydown', onEscKeyDown);
+
+    const flimsListContainerComponent = this._flimsListComponent.getElement().querySelector('.films-list__container');
+
     render(flimsListContainerComponent, filmCardComponent, RenderPosition.BEFOREEND);
   }
 
@@ -144,8 +152,9 @@ export default class BoardFilms {
       this._renderNoFilms();
     } else {
       this._renderFilmsListContainer();
-      // this.__renderFilmsListTopRated();
-      // this.__renderFilmsListMostCommented();
+      // this._renderFilmsListExtraContainer();
+      this._renderFilmsListTopRated();
+      this._renderFilmsListMostCommented();
     }
   }
 }
