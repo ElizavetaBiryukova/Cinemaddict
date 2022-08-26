@@ -26,8 +26,8 @@ import {
 } from './utils/render.js';
 
 const FILMS_COUNT = 30;
-const FILMS_COUNT_PER_STEP = 5;
 const EXTRA_FILMS = 2;
+const FILMS_COUNT_PER_STEP = 5;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilms);
 const filters = generateFilter(films);
@@ -76,7 +76,7 @@ const renderFilm = (filmListElement, film) => {
   render(filmListElement, filmCardComponent, RenderPosition.BEFOREEND);
 };
 
-const renderFilmsBoard = (filmsContainer, boardFilms) => {
+const renderFilmsList = (filmsContainer, boardFilms) => {
   const flimsComponent = new FilmsView();
   const flimsListComponent = new FilmsListView();
 
@@ -126,7 +126,7 @@ const renderFilmsBoard = (filmsContainer, boardFilms) => {
   });
 };
 
-renderFilmsBoard(siteMainElement, films);
+renderFilmsList(siteMainElement, films);
 
 //footer
 render(siteFooterStatisticsElement, new StatisticsView(), RenderPosition.BEFOREEND);

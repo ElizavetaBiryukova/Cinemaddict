@@ -13,4 +13,3 @@ export default class FilmsList extends AbstractView {
     return createFilmsListTemplate();
   }
 }
-
