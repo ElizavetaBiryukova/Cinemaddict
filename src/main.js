@@ -111,7 +111,7 @@ const renderFilmsBoard = (filmsContainer, boardFilms) => {
       renderFilmsCount += FILMS_COUNT_PER_STEP;
 
       if (renderFilmsCount >= boardFilms.length) {
-        showMoreButton.remove();
+        remove(showMoreButton);
       }
     });
   }
@@ -121,7 +121,7 @@ const renderFilmsBoard = (filmsContainer, boardFilms) => {
   filmsExtraListContainer.forEach((item) => {
     const container = item.querySelector('.films-list__container');
     for (let i = 0; i < EXTRA_FILMS; i++) {
-      render(container, new FilmCardView(boardFilms[i]), RenderPosition.BEFOREEND);
+      renderFilm(container,boardFilms[i]);
     }
   });
 };
