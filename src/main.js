@@ -1,14 +1,7 @@
 import RatingView from './view/rating.js';
 import NavigationView from './view/navigation.js';
 import SortView from './view/sort.js';
-// import FilmsView from './view/films.js';
-// import FilmsListView from './view/films-list.js';
-// import FilmCardView from './view/film-card.js';
-// import ShowMoreView from './view/show-more.js';
-// import FilmsListExtraView from './view/films-list-extra.js';
 import StatisticsView from './view/statistics.js';
-// import FilmDetailsView from './view/film-details.js';
-// import NoFilmsView from './view/no-films.js';
 import {
   generateFilms
 } from './mock/films-mock.js';
@@ -17,25 +10,19 @@ import {
 } from './utils/filter.js';
 // import LoadingView from './view/loading.js';
 import {
-// Keys
-} from './utils/common.js';
-import {
   render,
   RenderPosition,
-  // remove
 } from './utils/render.js';
 import BoardFilms from './presenter/films-list-presenter.js';
 
 const FILMS_COUNT = 30;
-// const EXTRA_FILMS = 2;
-// const FILMS_COUNT_PER_STEP = 5;
+
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilms);
 const filters = generateFilter(films);
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
-// const siteFooterElement = document.querySelector('.footer');
 const siteFooterStatisticsElement = document.querySelector('.footer__statistics');
 
 //header
@@ -45,13 +32,14 @@ render(siteHeaderElement, new RatingView(), RenderPosition.BEFOREEND);
 render(siteMainElement, new NavigationView(filters), RenderPosition.BEFOREEND);
 render(siteMainElement, new SortView(), RenderPosition.BEFOREEND);
 
+//films
+const filmsPresenter = new BoardFilms(siteMainElement);
+filmsPresenter.init(films);
+
 //footer
 render(siteFooterStatisticsElement, new StatisticsView(), RenderPosition.BEFOREEND);
 
 
-//films
-const filmsPresenter = new BoardFilms(siteMainElement);
-filmsPresenter.init(films);
 // const renderFilm = (filmListElement, film) => {
 //   const filmCardComponent = new FilmCardView(film);
 //   const filmDetailsComponent = new FilmDetailsView(film);

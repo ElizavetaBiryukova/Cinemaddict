@@ -138,10 +138,6 @@ export default class BoardFilms {
     });
   }
 
-
-  // _renderFilmsList() {
-  //   //Список фильмов
-  // }
   _renderBoardFilms() {
     //Рендер всего поля со всеми фильмами
     if (this._films.length === 0) {
@@ -150,8 +146,6 @@ export default class BoardFilms {
       this._renderFilmsListContainer();
       // this.__renderFilmsListTopRated();
       // this.__renderFilmsListMostCommented();
-
-
     }
   }
 }
