@@ -1,10 +1,11 @@
 import FilmsView from '../view/films.js';
 import FilmsListView from '../view/films-list.js';
 import ShowMoreView from '../view/show-more.js';
-import FilmsListExtraView from '../view/films-list-extra.js';
+// import FilmsListExtraView from '../view/films-list-extra.js';
 import NoFilmsView from '../view/no-films.js';
 import FilmCardView from '../view/film-card.js';
 import FilmDetailsView from '../view/film-details.js';
+import { getMostRatedFilms, getMostCommentedFilms } from '../mock/films-mock-extra.js';
 
 
 import {
@@ -17,7 +18,6 @@ import {
 } from '../utils/common.js';
 
 const FILMS_COUNT_PER_STEP = 5;
-// const EXTRA_FILMS = 2;
 
 export default class BoardFilms {
   constructor(filmsContainer) {
@@ -36,6 +36,9 @@ export default class BoardFilms {
     render(this._filmsContainer, this._flimsComponent, RenderPosition.BEFOREEND);
     render(this._flimsComponent, this._flimsListComponent, RenderPosition.BEFOREEND);
 
+    this._mostRatedFilms = getMostRatedFilms(this._films);
+    this._mostCommentedFilms = getMostCommentedFilms(this._films);
+
     this._renderBoardFilms();
   }
 
@@ -48,32 +51,34 @@ export default class BoardFilms {
 
   }
 
-  // _renderFilmsListExtraContainer() {
+  // _renderFilmsTopRated() {
+  //   if (this._mostRatedFilms && this._mostRatedFilms.length > 0) {
+  //     render(this._filmsContainer, this._filmsTopRated, RenderPosition.BEFOREEND);
+  //     this._mostRatedFilms
+  //       .forEach((film) => this._renderFilmInfo(this._filmsTopRated.getElement().querySelector('.films-list__container'), film));
+  //   }
+  // }
+
+  // _renderFilmsMostCommented() {
+  //   if (this._mostCommentedFilms && this._mostCommentedFilms.length > 0) {
+  //     render(this._filmsContainer, this._filmsMostCommented, RenderPosition.BEFOREEND);
+  //     this._mostCommentedFilms
+  //       .forEach((film) => this._renderFilmInfo(this._filmsMostCommented.getElement().querySelector('.films-list__container'), film));
+  //   }
+  // }
+
+
+  // _renderFilmsListTopRated() {
+  //   //Список екстра фильмов топ рейтинга
   //   render(this._flimsComponent, new FilmsListExtraView('Top rated'), RenderPosition.BEFOREEND);
+  // const filmsExtraList = new FilmsListExtraView('Top rated').getElement().querySelector('.films-list__container');
+
+  // }
+
+  // _renderFilmsListMostCommented() {
+  //   //Спиок экстра фильмов популярные
   //   render(this._flimsComponent, new FilmsListExtraView('Most commented'), RenderPosition.BEFOREEND);
   // }
-
-  // _renderFilmsListExtra() {
-  //   const filmsExtraList = [...this._flimsComponent.getElement().querySelectorAll('.films-list--extra')];
-
-  //   filmsExtraList.forEach((item) => {
-  //     const container = item.querySelector('.films-list__container');
-  //     for (let i = 0; i < EXTRA_FILMS; i++) {
-  //       this._renderFilms(container, films[i]);
-  //     }
-  //   });
-  // }
-
-
-  _renderFilmsListTopRated() {
-    //Список екстра фильмов топ рейтинга
-    render(this._flimsComponent, new FilmsListExtraView('Top rated'), RenderPosition.BEFOREEND);
-  }
-
-  _renderFilmsListMostCommented() {
-    //Спиок экстра фильмов популярные
-    render(this._flimsComponent, new FilmsListExtraView('Most commented'), RenderPosition.BEFOREEND);
-  }
 
   _renderFilm(film) {
     //Рендер карточек с фильмами, пока что это функция renderFilm В main.js
@@ -152,9 +157,10 @@ export default class BoardFilms {
       this._renderNoFilms();
     } else {
       this._renderFilmsListContainer();
-      // this._renderFilmsListExtraContainer();
-      this._renderFilmsListTopRated();
-      this._renderFilmsListMostCommented();
+
+      // this._renderFilmsListTopRated();
+      // this._renderFilmsListMostCommented();
+
     }
   }
 }
