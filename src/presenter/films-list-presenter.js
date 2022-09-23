@@ -2,7 +2,6 @@ import FilmsView from '../view/films.js';
 import FilmsListView from '../view/films-list.js';
 import ShowMoreView from '../view/show-more.js';
 import FilmsListExtraView from '../view/films-list-extra.js';
-import FilmsListExtra2View from '../view/films-list-extra.js';
 import NoFilmsView from '../view/no-films.js';
 import FilmCardView from '../view/film-card.js';
 import FilmDetailsView from '../view/film-details.js';
@@ -23,11 +22,16 @@ const FILM_EXTRA_CARDS = 2;
 export default class BoardFilms {
   constructor(filmsContainer) {
     this._filmsContainer = filmsContainer;
+    this._renderFilmsCount = FILMS_COUNT_PER_STEP;
+
     this._flimsComponent = new FilmsView();
     this._flimsListComponent = new FilmsListView();
     this._flimsListTopRatedComponent = new FilmsListExtraView('Top Rated');
-    this._flimsListMostCommentedComponent = new FilmsListExtra2View('Most commented');
+    this._flimsListMostCommentedComponent = new FilmsListExtraView('Most commented');
     this._noFilmsComponent = new NoFilmsView();
+    this._showMoreButton = new ShowMoreView();
+
+    this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
   }
 
   init(films) {
@@ -42,23 +46,24 @@ export default class BoardFilms {
   }
 
   _renderFilmsListContainer() {
+    //Общий список фильмов
     this._renderFilms(0, Math.min(this._films.length, FILMS_COUNT_PER_STEP));
     if (this._films.length > FILMS_COUNT_PER_STEP) {
       this._renderShowMoreButton();
     }
-
   }
 
   _renderMostComentedContainer() {
+    //Фильмы с большим количеством комментариев
     this._renderMostCommentedFilms();
   }
 
   _renderTopRatedContainer() {
+    //Фильмы с высоким рейтингом
     this._renderTopRatedFilms();
   }
 
   _renderFilm(film) {
-
     const filmCardComponent = new FilmCardView(film);
     const filmDetailsComponent = new FilmDetailsView(film);
 
@@ -165,7 +170,6 @@ export default class BoardFilms {
     render(flimsListTopRatedContainerComponent, filmCardComponent, RenderPosition.BEFOREEND);
   }
 
-
   _renderFilms(from, to) {
     //рендинг N-фильмов за раз
     this._films
@@ -194,28 +198,23 @@ export default class BoardFilms {
   _renderNoFilms() {
     // когда нет фильмов
     render(this._flimsComponent, this._noFilmsComponent, RenderPosition.BEFOREEND);
+    remove(this._flimsListTopRatedComponent);
+    remove(this._flimsListMostCommentedComponent);
+  }
+
+  _handleShowMoreButtonClick() {
+    this._renderFilms(this._renderFilmsCount, this._renderFilmsCount + FILMS_COUNT_PER_STEP);
+    this._renderFilmsCount += FILMS_COUNT_PER_STEP;
+
+    if (this._renderFilmsCount >= this._films.length) {
+      remove(this._showMoreButton);
+    }
   }
 
   _renderShowMoreButton() {
     //Кнопка для показа большего числа карточек
-    //метод по отрисовки компонентов из RenderFilms В main.js
-
-    let renderFilmsCount = FILMS_COUNT_PER_STEP;
-
-    const showMoreButton = new ShowMoreView();
-
-    render(this._flimsListComponent, showMoreButton, RenderPosition.BEFOREEND);
-    showMoreButton.setClickHandler(() => {
-      this._films
-        .slice(renderFilmsCount, renderFilmsCount + FILMS_COUNT_PER_STEP)
-        .forEach((films) => this._renderFilm(films));
-
-      renderFilmsCount += FILMS_COUNT_PER_STEP;
-
-      if (renderFilmsCount >= this._films.length) {
-        remove(showMoreButton);
-      }
-    });
+    render(this._flimsListComponent, this._showMoreButton, RenderPosition.BEFOREEND);
+    this._showMoreButton.setClickHandler(this._handleShowMoreButtonClick);
   }
 
   _renderBoardFilms() {
