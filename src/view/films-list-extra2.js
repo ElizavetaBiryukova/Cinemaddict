@@ -9,7 +9,7 @@ const createFilmsListExtraTemplate = (title) => (
 );
 
 
-export default class FilmsListExtra extends AbstractView {
+export default class FilmsListExtra2 extends AbstractView {
   constructor(title) {
     super();
     this._title = title;
