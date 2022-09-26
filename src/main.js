@@ -1,6 +1,5 @@
 import RatingView from './view/rating.js';
 import NavigationView from './view/navigation.js';
-import SortView from './view/sort.js';
 import StatisticsView from './view/statistics.js';
 import {
   generateFilms
@@ -30,7 +29,6 @@ render(siteHeaderElement, new RatingView(), RenderPosition.BEFOREEND);
 
 //menu
 render(siteMainElement, new NavigationView(filters), RenderPosition.BEFOREEND);
-render(siteMainElement, new SortView(), RenderPosition.BEFOREEND);
 
 //films
 const filmsPresenter = new BoardFilms(siteMainElement);

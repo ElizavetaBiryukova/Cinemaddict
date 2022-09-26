@@ -3,18 +3,14 @@ import FilmsListView from '../view/films-list.js';
 import ShowMoreView from '../view/show-more.js';
 import FilmsListExtraView from '../view/films-list-extra.js';
 import NoFilmsView from '../view/no-films.js';
-import FilmCardView from '../view/film-card.js';
-import FilmDetailsView from '../view/film-details.js';
-
-
+import SortView from '../view/sort.js';
+import FilmPresenter from '../presenter/film-presenter.js';
 import {
   render,
   RenderPosition,
   remove
 } from '../utils/render.js';
-import {
-  Keys
-} from '../utils/common.js';
+
 
 const FILMS_COUNT_PER_STEP = 5;
 const FILM_EXTRA_CARDS = 2;
@@ -30,6 +26,7 @@ export default class BoardFilms {
     this._flimsListMostCommentedComponent = new FilmsListExtraView('Most commented');
     this._noFilmsComponent = new NoFilmsView();
     this._showMoreButton = new ShowMoreView();
+    this._sortComponent = new SortView();
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
   }
@@ -45,6 +42,10 @@ export default class BoardFilms {
     this._renderBoardFilms();
   }
 
+  _renderSort() {
+    render(this._flimsComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
+  }
+
   _renderFilmsListContainer() {
     //Общий список фильмов
     this._renderFilms(0, Math.min(this._films.length, FILMS_COUNT_PER_STEP));
@@ -53,121 +54,19 @@ export default class BoardFilms {
     }
   }
 
-  _renderMostComentedContainer() {
-    //Фильмы с большим количеством комментариев
-    this._renderMostCommentedFilms();
-  }
-
-  _renderTopRatedContainer() {
-    //Фильмы с высоким рейтингом
-    this._renderTopRatedFilms();
-  }
-
   _renderFilm(film) {
-    const filmCardComponent = new FilmCardView(film);
-    const filmDetailsComponent = new FilmDetailsView(film);
-
-    const siteFooterElement = document.querySelector('.footer');
-
-    const removeDetailsComponent = () => {
-      remove(filmDetailsComponent);
-
-      document.querySelector('body').classList.remove('hide-overflow');
-    };
-
-    filmCardComponent.setOpenClickHandler(() => {
-      siteFooterElement.appendChild(filmDetailsComponent.getElement());
-      document.querySelector('body').classList.add('hide-overflow');
-    });
-
-    filmDetailsComponent.setCloseClickHandler(() => {
-      removeDetailsComponent();
-    });
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === Keys.ESCAPE || evt.key === Keys.ESC) {
-        evt.preventDefault();
-        removeDetailsComponent();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
-
-    document.addEventListener('keydown', onEscKeyDown);
-
-    const flimsListContainerComponent = this._flimsListComponent.getElement().querySelector('.films-list__container');
-
-    render(flimsListContainerComponent, filmCardComponent, RenderPosition.BEFOREEND);
+    const filmPresenter = new FilmPresenter(this._flimsListComponent.getElement().querySelector('.films-list__container'));
+    filmPresenter.init(film);
   }
 
   _renderMostCommentedFilm(film) {
-    const filmCardComponent = new FilmCardView(film);
-    const filmDetailsComponent = new FilmDetailsView(film);
-
-    const siteFooterElement = document.querySelector('.footer');
-
-    const removeDetailsComponent = () => {
-      remove(filmDetailsComponent);
-
-      document.querySelector('body').classList.remove('hide-overflow');
-    };
-
-    filmCardComponent.setOpenClickHandler(() => {
-      siteFooterElement.appendChild(filmDetailsComponent.getElement());
-      document.querySelector('body').classList.add('hide-overflow');
-    });
-
-    filmDetailsComponent.setCloseClickHandler(() => {
-      removeDetailsComponent();
-    });
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === Keys.ESCAPE || evt.key === Keys.ESC) {
-        evt.preventDefault();
-        removeDetailsComponent();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
-
-    document.addEventListener('keydown', onEscKeyDown);
-
-    const flimsListExtraContainerComponent = this._flimsListMostCommentedComponent.getElement().querySelector('.films-list__container');
-
-    render(flimsListExtraContainerComponent, filmCardComponent, RenderPosition.BEFOREEND);
+    const filmPresenter = new FilmPresenter(this._flimsListMostCommentedComponent.getElement().querySelector('.films-list__container'));
+    filmPresenter.init(film);
   }
 
   _renderTopRatedFilm(film) {
-    const filmCardComponent = new FilmCardView(film);
-    const filmDetailsComponent = new FilmDetailsView(film);
-
-    const siteFooterElement = document.querySelector('.footer');
-
-    const removeDetailsComponent = () => {
-      remove(filmDetailsComponent);
-
-      document.querySelector('body').classList.remove('hide-overflow');
-    };
-
-    filmCardComponent.setOpenClickHandler(() => {
-      siteFooterElement.appendChild(filmDetailsComponent.getElement());
-      document.querySelector('body').classList.add('hide-overflow');
-    });
-
-    filmDetailsComponent.setCloseClickHandler(() => {
-      removeDetailsComponent();
-    });
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === Keys.ESCAPE || evt.key === Keys.ESC) {
-        evt.preventDefault();
-        removeDetailsComponent();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
-
-    document.addEventListener('keydown', onEscKeyDown);
-
-    const flimsListTopRatedContainerComponent = this._flimsListTopRatedComponent.getElement().querySelector('.films-list__container');
-    render(flimsListTopRatedContainerComponent, filmCardComponent, RenderPosition.BEFOREEND);
+    const filmPresenter = new FilmPresenter(this._flimsListTopRatedComponent.getElement().querySelector('.films-list__container'));
+    filmPresenter.init(film);
   }
 
   _renderFilms(from, to) {
@@ -219,12 +118,14 @@ export default class BoardFilms {
 
   _renderBoardFilms() {
     //Рендер всего поля со всеми фильмами
+    this._renderSort();
     if (this._films.length === 0) {
       this._renderNoFilms();
     } else {
+
       this._renderFilmsListContainer();
-      this._renderMostComentedContainer();
-      this._renderTopRatedContainer();
+      this._renderMostCommentedFilms();
+      this._renderTopRatedFilms();
     }
   }
 }
