@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { nanoid } from 'nanoid';
 import {
   getRandomInteger,
   shuffleArray
@@ -201,7 +202,7 @@ export const generateFilms = () => {
   const hasComments = Boolean(getRandomInteger(0, 1));
   const comments = hasComments === false ? false : generateFilmComments();
   return {
-    id: getRandomInteger(0, 100),
+    id: nanoid(),
     comments,
     filmInfo: {
       title: generateTitle(),

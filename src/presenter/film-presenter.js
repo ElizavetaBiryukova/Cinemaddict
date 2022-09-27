@@ -56,6 +56,11 @@ export default class Film {
 
   }
 
+  destroy() {
+    remove(this._filmCardComponent);
+    remove(this._filmDetailsComponent);
+  }
+
   _handleOpenClick() {
     this._removeOldFilmDetails();
     render(document.querySelector('body'), this._filmDetailsComponent, RenderPosition.BEFOREEND);

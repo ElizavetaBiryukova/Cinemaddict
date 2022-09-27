@@ -5,6 +5,7 @@ import FilmsListExtraView from '../view/films-list-extra.js';
 import NoFilmsView from '../view/no-films.js';
 import SortView from '../view/sort.js';
 import FilmPresenter from '../presenter/film-presenter.js';
+import {updateItem} from '../utils/common.js';
 import {
   render,
   RenderPosition,
@@ -19,6 +20,8 @@ export default class BoardFilms {
   constructor(filmsContainer) {
     this._filmsContainer = filmsContainer;
     this._renderFilmsCount = FILMS_COUNT_PER_STEP;
+    this._taskPresenter = new Map();
+
 
     this._flimsComponent = new FilmsView();
     this._flimsListComponent = new FilmsListView();
@@ -28,6 +31,7 @@ export default class BoardFilms {
     this._showMoreButton = new ShowMoreView();
     this._sortComponent = new SortView();
 
+    this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
   }
 
@@ -42,6 +46,11 @@ export default class BoardFilms {
     this._renderBoardFilms();
   }
 
+  _handleFilmChange(updateFilm) {
+    this._films = updateItem(this._films, updateFilm);
+    this._filmPresenter.get(updateFilm.id).init(updateFilm);
+  }
+
   _renderSort() {
     render(this._flimsComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
   }
@@ -54,9 +63,17 @@ export default class BoardFilms {
     }
   }
 
+  _clearFilmsListContainer() {
+    this._filmPresenter.forEach((presenter) => presenter.destroy());
+    this._filmPresenter.clear();
+    this._renderFilmsCount = FILMS_COUNT_PER_STEP;
+    remove(this._showMoreButton);
+  }
+
   _renderFilm(film) {
     const filmPresenter = new FilmPresenter(this._flimsListComponent.getElement().querySelector('.films-list__container'));
     filmPresenter.init(film);
+    this._filmPresenter.set(film.id, filmPresenter);
   }
 
   _renderMostCommentedFilm(film) {

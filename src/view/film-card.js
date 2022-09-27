@@ -46,6 +46,9 @@ export default class FilmCard extends AbstractView {
     this._films = films;
 
     this._openClickHandler = this._openClickHandler.bind(this);
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
+    this._historyClickHandler = this._historyClickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -55,6 +58,21 @@ export default class FilmCard extends AbstractView {
   _openClickHandler(evt) {
     evt.preventDefault();
     this._callback.openClick();
+  }
+
+  _watchlistClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchlistClick();
+  }
+
+  _historyClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.historylistClick();
+  }
+
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoritelistClick();
   }
 
   setOpenClickHandler(callback) {
