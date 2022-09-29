@@ -45,7 +45,8 @@ const createPopupComments = (
 const createFilmDetailsTemplate = (films) => {
   const {
     filmInfo,
-    comments
+    comments,
+    userDetails
   } = films;
   const {
     title,
@@ -60,10 +61,18 @@ const createFilmDetailsTemplate = (films) => {
     genre,
     description
   } = filmInfo;
-
+  const {
+    watchlist,
+    alreadyWatched,
+    favorite
+  } = userDetails;
 
   const duration = runtime > 59 ? `${parseInt((runtime/60), 10)}h ${runtime % 60}m` : `${runtime}m`;
   const numberСomments = comments === false ? '0' : `${comments.length}`;
+  const ACTIVE_STATE = 'film-card__controls-item--active';
+  const addedToWatchlist = watchlist ? ACTIVE_STATE : '';
+  const addedToAlreadyWatched = alreadyWatched ? ACTIVE_STATE : '';
+  const addedToFavorite = favorite ? ACTIVE_STATE : '';
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
@@ -130,9 +139,9 @@ const createFilmDetailsTemplate = (films) => {
       </div>
 
       <section class="film-details__controls">
-        <button type="button" class="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-        <button type="button" class="film-details__control-button film-details__control-button--active film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-        <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watchlist ${ addedToWatchlist }" id="watchlist" name="watchlist">Add to watchlist</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watched ${ addedToAlreadyWatched }" id="watched" name="watched">Already watched</button>
+        <button type="button" class="film-details__control-button film-details__control-button--favorite ${ addedToFavorite }" id="favorite" name="favorite">Add to favorites</button>
       </section>
     </div>
 
@@ -181,6 +190,9 @@ export default class FilmDetails extends AbstractView {
     this._films = films;
 
     this._closeClickHandler = this._closeClickHandler.bind(this);
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
+    this._historyClickHandler = this._historyClickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -192,9 +204,39 @@ export default class FilmDetails extends AbstractView {
     this._callback.closeClick();
   }
 
+  _watchlistClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchlistClick();
+  }
+
+  _historyClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.historyClick();
+  }
+
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+
   setCloseClickHandler(callback) {
     this._callback.closeClick = callback;
     this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._closeClickHandler);
+  }
+
+  setWatchlistClickHandler(callback) {
+    this._callback.watchlistClick = callback;
+    this.getElement().querySelector('.film-card__controls-item--add-to-watchlist').addEventListener('click', this._watchlistClickHandler);
+  }
+
+  setHistoryClickHandler(callback) {
+    this._callback.historyClick = callback;
+    this.getElement().querySelector('.film-card__controls-item--mark-as-watched').addEventListener('click', this._historyClickHandler);
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector('.film-card__controls-item--favorite').addEventListener('click', this._favoriteClickHandler);
   }
 
 }

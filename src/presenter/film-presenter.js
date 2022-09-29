@@ -12,8 +12,9 @@ import {
 
 
 export default class Film {
-  constructor(filmListContainer) {
+  constructor(filmListContainer, changeData) {
     this._filmListContainer = filmListContainer;
+    this._changeData = changeData;
 
     this._filmCardComponent = null;
     this._filmDetailsComponent = null;
@@ -21,6 +22,9 @@ export default class Film {
     this._handleOpenClick = this._handleOpenClick.bind(this);
     this._handleRemoveFilmDetails = this._handleRemoveFilmDetails.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+    this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
+    this._handleAlreadyWatchedClick = this._handleAlreadyWatchedClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
   init(film) {
@@ -33,7 +37,14 @@ export default class Film {
     this._filmDetailsComponent = new FilmDetailsView(film);
 
     this._filmCardComponent.setOpenClickHandler(this._handleOpenClick);
+    this._filmCardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._filmCardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._filmCardComponent.setAlreadyWatchedClickHandler(this._handleAlreadyWatchedClick);
     this._filmDetailsComponent.setCloseClickHandler(this._handleRemoveFilmDetails);
+    // this._filmDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    // this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    // this._filmDetailsComponent.setAlreadyWatchedClickHandler(this._handleAlreadyWatchedClick);
+
 
     if (prevFilmCardComponent === null || prevFilmDetailsComponent === null) {
       render(this._filmListContainer, this._filmCardComponent, RenderPosition.BEFOREEND);
@@ -45,15 +56,13 @@ export default class Film {
       this._filmCardComponent.setOpenClickHandler(this._handleOpenClick);
     }
 
-    if (this._filmListContainer.contains(prevFilmDetailsComponent.getElement())) {
-      replace(this._filmDetailsComponent, prevFilmDetailsComponent);
+    if (document.querySelector('body').contains(prevFilmDetailsComponent.getElement())) {
+      // replace(this._filmDetailsComponent, prevFilmDetailsComponent);
       this._handleOpenClick();
     }
 
     remove(prevFilmCardComponent);
     remove(prevFilmDetailsComponent);
-
-
   }
 
   destroy() {
@@ -64,7 +73,7 @@ export default class Film {
   _handleOpenClick() {
     this._removeOldFilmDetails();
     render(document.querySelector('body'), this._filmDetailsComponent, RenderPosition.BEFOREEND);
-    // console.log(this._filmDetailsComponent);
+
     document.querySelector('body').classList.add('hide-overflow');
     document.addEventListener('keydown', this._escKeyDownHandler);
   }
@@ -87,5 +96,55 @@ export default class Film {
       document.querySelector('.film-details').remove();
       this._handleRemoveFilmDetails();
     }
+  }
+
+
+  _handleWatchlistClick() {
+    this._changeData(
+      Object.assign(
+        {},
+        this._film, {
+          userDetails:
+          {
+            watchlist: !this._film.userDetails.watchlist,
+            alreadyWatched: this._film.userDetails.alreadyWatched,
+            watchingDate: this._film.userDetails.watchingDate,
+            favorite: this._film.userDetails.favorite,
+          },
+        },
+      ),
+    );
+  }
+
+  _handleAlreadyWatchedClick() {
+    this._changeData(
+      Object.assign({},
+        this._film, {
+          userDetails:
+          {
+            watchlist: this._film.userDetails.watchlist,
+            alreadyWatched: !this._film.userDetails.alreadyWatched,
+            watchingDate: this._film.userDetails.watchingDate,
+            favorite: this._film.userDetails.favorite,
+          },
+        },
+      ),
+    );
+  }
+
+  _handleFavoriteClick() {
+    this._changeData(
+      Object.assign({},
+        this._film, {
+          userDetails:
+          {
+            watchlist: this._film.userDetails.watchlist,
+            alreadyWatched: this._film.userDetails.alreadyWatched,
+            watchingDate: this._film.userDetails.watchingDate,
+            favorite: !this._film.userDetails.favorite,
+          },
+        },
+      ),
+    );
   }
 }

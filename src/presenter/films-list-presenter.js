@@ -5,7 +5,9 @@ import FilmsListExtraView from '../view/films-list-extra.js';
 import NoFilmsView from '../view/no-films.js';
 import SortView from '../view/sort.js';
 import FilmPresenter from '../presenter/film-presenter.js';
-import {updateItem} from '../utils/common.js';
+import {
+  updateItem
+} from '../utils/common.js';
 import {
   render,
   RenderPosition,
@@ -20,7 +22,7 @@ export default class BoardFilms {
   constructor(filmsContainer) {
     this._filmsContainer = filmsContainer;
     this._renderFilmsCount = FILMS_COUNT_PER_STEP;
-    this._taskPresenter = new Map();
+    this._filmPresenter = new Map();
 
 
     this._flimsComponent = new FilmsView();
@@ -70,27 +72,29 @@ export default class BoardFilms {
     remove(this._showMoreButton);
   }
 
-  _renderFilm(film) {
-    const filmPresenter = new FilmPresenter(this._flimsListComponent.getElement().querySelector('.films-list__container'));
+  _renderFilm(filmsContainer, film) {
+    const filmPresenter = new FilmPresenter(filmsContainer, this._handleFilmChange);
     filmPresenter.init(film);
     this._filmPresenter.set(film.id, filmPresenter);
   }
 
-  _renderMostCommentedFilm(film) {
-    const filmPresenter = new FilmPresenter(this._flimsListMostCommentedComponent.getElement().querySelector('.films-list__container'));
+  _renderMostCommentedFilm(filmsContainer, film) {
+    const filmPresenter = new FilmPresenter(filmsContainer, this._handleFilmChange);
     filmPresenter.init(film);
+    this._filmPresenter.set(film.id, filmPresenter);
   }
 
-  _renderTopRatedFilm(film) {
-    const filmPresenter = new FilmPresenter(this._flimsListTopRatedComponent.getElement().querySelector('.films-list__container'));
+  _renderTopRatedFilm(filmsContainer, film) {
+    const filmPresenter = new FilmPresenter(filmsContainer, this._handleFilmChange);
     filmPresenter.init(film);
+    this._filmPresenter.set(film.id, filmPresenter);
   }
 
   _renderFilms(from, to) {
     //рендинг N-фильмов за раз
     this._films
       .slice(from, to)
-      .forEach((films) => this._renderFilm(films));
+      .forEach((films) => this._renderFilm(this._flimsListComponent.getElement().querySelector('.films-list__container'), films));
   }
 
   _renderMostCommentedFilms() {
@@ -99,7 +103,7 @@ export default class BoardFilms {
       .filter((film) => film.comments.length > 0)
       .sort((film1, film2) => film2.comments.length - film1.comments.length)
       .slice(0, FILM_EXTRA_CARDS)
-      .forEach((films) => this._renderMostCommentedFilm(films));
+      .forEach((films) => this._renderMostCommentedFilm(this._flimsListMostCommentedComponent.getElement().querySelector('.films-list__container'), films));
   }
 
   _renderTopRatedFilms() {
@@ -108,7 +112,7 @@ export default class BoardFilms {
       .filter((film) => film.filmInfo.rating > 0)
       .sort((film1, film2) => film2.filmInfo.rating - film1.filmInfo.rating)
       .slice(0, FILM_EXTRA_CARDS)
-      .forEach((films) => this._renderTopRatedFilm(films));
+      .forEach((films) => this._renderTopRatedFilm(this._flimsListTopRatedComponent.getElement().querySelector('.films-list__container'), films));
   }
 
   _renderNoFilms() {
