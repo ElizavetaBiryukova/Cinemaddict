@@ -40,10 +40,11 @@ export default class Film {
     this._filmCardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._filmCardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._filmCardComponent.setAlreadyWatchedClickHandler(this._handleAlreadyWatchedClick);
+
     this._filmDetailsComponent.setCloseClickHandler(this._handleRemoveFilmDetails);
-    // this._filmDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-    // this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
-    // this._filmDetailsComponent.setAlreadyWatchedClickHandler(this._handleAlreadyWatchedClick);
+    this._filmDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._filmDetailsComponent.setAlreadyWatchedClickHandler(this._handleAlreadyWatchedClick);
 
 
     if (prevFilmCardComponent === null || prevFilmDetailsComponent === null) {
@@ -57,7 +58,7 @@ export default class Film {
     }
 
     if (document.querySelector('body').contains(prevFilmDetailsComponent.getElement())) {
-      // replace(this._filmDetailsComponent, prevFilmDetailsComponent);
+      replace(this._filmDetailsComponent, prevFilmDetailsComponent);
       this._handleOpenClick();
     }
 
@@ -72,15 +73,17 @@ export default class Film {
 
   _handleOpenClick() {
     this._removeOldFilmDetails();
-    render(document.querySelector('body'), this._filmDetailsComponent, RenderPosition.BEFOREEND);
+    render(document.querySelector('footer'), this._filmDetailsComponent, RenderPosition.AFTER);
 
     document.querySelector('body').classList.add('hide-overflow');
     document.addEventListener('keydown', this._escKeyDownHandler);
+    this._filmDetailsComponent.setCloseClickHandler(this._handleRemoveFilmDetails);
   }
 
   _handleRemoveFilmDetails() {
     remove(this._filmDetailsComponent);
     document.querySelector('body').classList.remove('hide-overflow');
+
   }
 
   _escKeyDownHandler(evt) {

@@ -78,13 +78,13 @@ export default class BoardFilms {
     this._filmPresenter.set(film.id, filmPresenter);
   }
 
-  _renderMostCommentedFilm(filmsContainer, film) {
+  _renderTopRatedFilm(filmsContainer, film) {
     const filmPresenter = new FilmPresenter(filmsContainer, this._handleFilmChange);
     filmPresenter.init(film);
     this._filmPresenter.set(film.id, filmPresenter);
   }
 
-  _renderTopRatedFilm(filmsContainer, film) {
+  _renderMostCommentedFilm(filmsContainer, film) {
     const filmPresenter = new FilmPresenter(filmsContainer, this._handleFilmChange);
     filmPresenter.init(film);
     this._filmPresenter.set(film.id, filmPresenter);
