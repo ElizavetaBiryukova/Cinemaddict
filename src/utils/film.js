@@ -14,3 +14,12 @@ export const commentDate = (date) => dayjs(date).calendar(null, {
 });
 // Полная дата релиза фильма
 export const releaseDate = (date) => dayjs(date).format('DD MMMM YYYY');
+
+//Сортировка
+export const sortByDate = (film1, film2) => (
+  dayjs(film2.filmInfo.release.date).diff(film1.filmInfo.release.date)
+);
+
+export const sortByRating = (film1, film2) => (
+  film2.filmInfo.totalRating - film1.filmInfo.totalRating
+);

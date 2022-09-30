@@ -78,6 +78,9 @@ export default class Film {
     document.querySelector('body').classList.add('hide-overflow');
     document.addEventListener('keydown', this._escKeyDownHandler);
     this._filmDetailsComponent.setCloseClickHandler(this._handleRemoveFilmDetails);
+    this._filmDetailsComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._filmDetailsComponent.setAlreadyWatchedClickHandler(this._handleAlreadyWatchedClick);
+    this._filmDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
   }
 
   _handleRemoveFilmDetails() {
