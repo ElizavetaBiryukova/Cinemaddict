@@ -85,6 +85,8 @@ export default class BoardFilms {
     this._sortFilms(sortType);
     this._clearFilmsListContainer();
     this._renderFilmsListContainer();
+    this._renderMostCommentedFilms();
+    this._renderTopRatedFilms();
   }
 
   _renderSort() {
