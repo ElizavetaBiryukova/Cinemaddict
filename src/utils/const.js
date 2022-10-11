@@ -1,5 +1,5 @@
 export const SortType = {
   DEFAULT: 'default',
-  DATA: 'data',
+  DATE: 'date',
   RATING: 'rating',
 };
