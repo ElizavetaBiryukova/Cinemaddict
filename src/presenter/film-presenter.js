@@ -1,5 +1,6 @@
 import FilmCardView from '../view/film-card.js';
 import FilmDetailsView from '../view/film-details.js';
+import FilmCommentsView from '../view/film-comments.js';
 import {
   render,
   RenderPosition,
@@ -35,6 +36,7 @@ export default class Film {
 
     this._filmCardComponent = new FilmCardView(film);
     this._filmDetailsComponent = new FilmDetailsView(film);
+
 
     this._filmCardComponent.setOpenClickHandler(this._handleOpenClick);
     this._filmCardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
@@ -74,6 +76,7 @@ export default class Film {
   _handleOpenClick() {
     this._removeOldFilmDetails();
     render(document.querySelector('footer'), this._filmDetailsComponent, RenderPosition.AFTER);
+    render(this._filmDetailsComponent.getElement().querySelector('.film-details__bottom-container'), new FilmCommentsView(this._film), RenderPosition.BEFOREEND);
 
     document.querySelector('body').classList.add('hide-overflow');
     document.addEventListener('keydown', this._escKeyDownHandler);

@@ -61,7 +61,6 @@ export default class BoardFilms {
     this._films = updateItem(this._films, updateFilm);
     this._sourcedFilms = updateItem(this._sourcedFilms, updateFilm);
     this._filmPresenter.get(updateFilm.id).init(updateFilm);
-
   }
 
   _sortFilms(sortType) {
